@@ -4,7 +4,7 @@
 
 
 
-//get 12 results from JSON object from randomuser site
+//get 12 results from JSON object from randomuser site and display them on the page
  $.ajax({
   url: 'https://randomuser.me/api/?results=12',
   dataType: 'json',
@@ -21,6 +21,14 @@
       $('.gallery').append(employee);
       employee = '';
       console.log(randomUser);
+    });
+
+    /*add a click event on every div of the page to display the modal of the chosen employee*/
+    $('.card').each(function () {
+      this.addEventListener('click', function (){
+        console.log(this);
+      });
+
     });
   }
 });
