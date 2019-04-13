@@ -22,7 +22,6 @@
       employee += '<p class="card-text cap">' + randomUser.location.city + ',' + randomUser.location.state + '</p></div>';
       $('.gallery').append(employee);
       employee = '';
-      console.log(randomUser);
     });
 
 
