@@ -80,6 +80,8 @@ function showSearchedEmployee (userInput) {
       $(this).show();
     }
   });
+  //get visible card (searched for)
+  //let visibleCard = $('.card:visible').length;
 }
 
 
