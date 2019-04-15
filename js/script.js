@@ -38,7 +38,7 @@ function nextPrevButtons(users, index) {
 
   $('#modal-next').click(function() {
     $('.modal-container').remove();
-    createModalMockup(users[index+1], users, (index-1));
+    createModalMockup(users[index+1], users, (index+1));
   });
 
 }
