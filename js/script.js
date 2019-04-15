@@ -127,21 +127,28 @@ function showSearchedEmployee (userInput) {
 
 
 
-
-
     //add search bar to the page
     let searchBar = '<form action="#" method="get">';
     searchBar += '<input type="search" id="search-input" class="search-input" placeholder="Search...">';
     searchBar += '<input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit"></form>';
     $('.search-container').append(searchBar);
 
+    //dynamically search employees as user type
+    $('#search-input').keyup(function (e) {
+      //prevent get request to be re submitted again
+      e.preventDefault();
+      //get user input
+      let userInput = $('#search-input').val().toLowerCase();
+      showSearchedEmployee(userInput);
+    });
+
+    //search employees when button is clicked
     $('#search-submit').click(function (e) {
       //prevent get request to be re submitted again
       e.preventDefault();
       //get user input
       let userInput = $('#search-input').val().toLowerCase();
       showSearchedEmployee(userInput);
-
     });
   }
 });
