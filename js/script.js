@@ -27,12 +27,71 @@ function createModalMockup (randomUser, users, index) {
   $('#modal-close-btn').click(function() {
     $('.modal-container').remove();
   });
-  //attach click event handler to next/prec buttons
-  nextPrevButtons(users, index)
+
+  /* check if modal is being displayed on search mode or not and set next/prev
+  buttons accordingly*/
+  if($('#search-input').val() === '') {
+    //attach click event handler to next/prec buttons
+    nextPrevButtons(users, index)
+  }
+  else {
+    //nextPrevButtonsWithSearch(users, index);
+    console.log('BBB')
+  }
 }
+
 
 //function to add click events to next/prev buttons
 function nextPrevButtons(users, index) {
+  let numberOfEmployees = $('.card:visible').length;
+  $('#modal-prev').click(function() {
+    $('.modal-container').remove();
+    if (index - 1 < 0) {
+      createModalMockup(users[numberOfEmployees-1], users, numberOfEmployees-1);
+    }
+    else {
+      createModalMockup(users[index-1], users, (index-1));
+    }
+  });
+  $('#modal-next').click(function() {
+    $('.modal-container').remove();
+    if (index + 1 > numberOfEmployees-1) {
+      createModalMockup(users[0], users, 0);
+    }
+    else {
+      createModalMockup(users[index+1], users, (index+1));
+    }
+  });
+}
+
+/*
+function returnNextIndex (index) {
+  let visibleIds = getVisibleId();
+  $('.card').each(function (i) {
+    if(i > index) {
+      if (visibleIds.includes($(this)[0].id)){
+        return i;
+      }
+    }
+    //console.log($(this)[0].id);
+    //console.log($('.card:visible'));
+
+  });
+}
+
+//return an array of all ids that are visible. Need it for next/prev buttons on search results
+function getVisibleId () {
+  let visibleIds = []
+  $('.card:visible').each(function () {
+    visibleIds.push($(this)[0].id);
+
+  });
+  return visibleIds;
+}
+
+
+//function to add click events to next/prev buttons
+function nextPrevButtonsWithSearch(users, index) {
   $('#modal-prev').click(function() {
     $('.modal-container').remove();
     createModalMockup(users[index-1], users, (index-1));
@@ -40,36 +99,11 @@ function nextPrevButtons(users, index) {
   });
   $('#modal-next').click(function() {
     $('.modal-container').remove();
-    createModalMockup(users[index+1], users, (index+1));
+    createModalMockup(users[index+1], users, returnNextIndex(index));
     checkEndOfList(index+1);
   });
 }
-
-
-/*function to check if with the next/prev buttons the user reach one end of the list
-and consequently disable the button */
-function checkEndOfList (index) {
-  if (index === 0){
-    $('#modal-next').attr('disabled', false);
-    $('#modal-next').show();
-    $('#modal-prev').attr('disabled', true);
-    $('#modal-prev').hide();
-  }
-  else if (index === 11) {
-    $('#modal-next').attr('disabled', true);
-    $('#modal-next').hide();
-    $('#modal-prev').attr('disabled', false);
-    $('#modal-prev').show();
-  }
-  else {
-    $('#modal-next').attr('disabled', false);
-    $('#modal-next').show();
-    $('#modal-prev').attr('disabled', false);
-    $('#modal-prev').show();
-  }
-}
-
-
+*/
 
 function showSearchedEmployee (userInput) {
   //hide all the cards and show only the ones that match (partial) user input
@@ -80,8 +114,6 @@ function showSearchedEmployee (userInput) {
       $(this).show();
     }
   });
-  //get visible card (searched for)
-  //let visibleCard = $('.card:visible').length;
 }
 
 
@@ -120,8 +152,6 @@ function showSearchedEmployee (userInput) {
           if (randomUser.login.username === selectedEmployee) {
             //set the html page format to display the chosen employee
             createModalMockup(randomUser, data.results, index);
-            //check if start or end of list was chose and, if so, display next/prev accordingly
-            checkEndOfList(index);
           }
         });
       });
@@ -141,7 +171,7 @@ function showSearchedEmployee (userInput) {
       e.preventDefault();
       //get user input
       let userInput = $('#search-input').val().toLowerCase();
-      showSearchedEmployee(userInput);
+      showSearchedEmployee(userInput, data.results);
     });
 
     //search employees when button is clicked
@@ -150,7 +180,7 @@ function showSearchedEmployee (userInput) {
       e.preventDefault();
       //get user input
       let userInput = $('#search-input').val().toLowerCase();
-      showSearchedEmployee(userInput);
+      showSearchedEmployee(userInput, data.results);
     });
   }
 });
