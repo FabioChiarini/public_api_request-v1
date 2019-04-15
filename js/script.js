@@ -72,7 +72,7 @@ function checkEndOfList (index) {
 
 //get 12 results from JSON object from randomuser site and display them on the page
  $.ajax({
-  url: 'https://randomuser.me/api/?results=12',
+  url: 'https://randomuser.me/api/?results=12&nat=us',
   dataType: 'json',
   success: function(data) {
     /*loop through each random user obtained from the request
@@ -89,6 +89,7 @@ function checkEndOfList (index) {
       $('.gallery').append(employee);
       employee = '';
     });
+
 
 
     /*add a click event on every div of the page to display the modal of the chosen employee*/
@@ -109,5 +110,10 @@ function checkEndOfList (index) {
         });
       });
     });
+
+    let searchBar = '<form action="#" method="get">';
+    searchBar += '<input type="search" id="search-input" class="search-input" placeholder="Search...">';
+    searchBar += '<input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit"></form>';
+    $('.search-container').append(searchBar);
   }
 });
