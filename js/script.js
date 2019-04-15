@@ -121,15 +121,15 @@ function checkEndOfList (index) {
       //prevent get request to be re submitted again
       e.preventDefault();
       //get user input
-      let userInput = $('#search-input').val();
+      let userInput = $('#search-input').val().toLowerCase();
 
+      //hide all the cards and show only the ones that match (partial) user input
       $('.card').each(function () {
-        console.log($(this).children().children()[1].text());
         $(this).hide();
-
-        //card.attr('hidden', true);
-        //students[k].name.toString().toUpperCase().includes(userInput.toString().toUpperCase()
-
+        //check if user input partially match some employees and, if so, show the card
+        if (($(this).children().children()[1].textContent).includes(userInput)) {
+          $(this).show();
+        }
       });
 
     });
