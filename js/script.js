@@ -70,6 +70,20 @@ function checkEndOfList (index) {
 }
 
 
+
+function showSearchedEmployee (userInput) {
+  //hide all the cards and show only the ones that match (partial) user input
+  $('.card').each(function () {
+    $(this).hide();
+    //check if user input partially match some employees and, if so, show the card
+    if (($(this).children().children()[1].textContent).includes(userInput)) {
+      $(this).show();
+    }
+  });
+}
+
+
+
 //get 12 results from JSON object from randomuser site and display them on the page
  $.ajax({
   url: 'https://randomuser.me/api/?results=12&nat=us',
@@ -111,6 +125,10 @@ function checkEndOfList (index) {
       });
     });
 
+
+
+
+
     //add search bar to the page
     let searchBar = '<form action="#" method="get">';
     searchBar += '<input type="search" id="search-input" class="search-input" placeholder="Search...">';
@@ -122,15 +140,7 @@ function checkEndOfList (index) {
       e.preventDefault();
       //get user input
       let userInput = $('#search-input').val().toLowerCase();
-
-      //hide all the cards and show only the ones that match (partial) user input
-      $('.card').each(function () {
-        $(this).hide();
-        //check if user input partially match some employees and, if so, show the card
-        if (($(this).children().children()[1].textContent).includes(userInput)) {
-          $(this).show();
-        }
-      });
+      showSearchedEmployee(userInput);
 
     });
   }
