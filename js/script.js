@@ -2,7 +2,9 @@
  * Project 5 - Public API Request
  */
 
-
+/* Function to:
+1) Create the mockup for the modal employees
+2) call the function to add click event to next/prev buttons */
 function createModalMockup (randomUser, users, index) {
   let modalEmployee = '';
   modalEmployee = '<div class="modal-container"><div class="modal">';
@@ -27,20 +29,29 @@ function createModalMockup (randomUser, users, index) {
   });
 
   nextPrevButtons(users, index)
-
+  $('#modal-prev').disable().blur();
 }
 
+//function to add click events to next/prev buttons
 function nextPrevButtons(users, index) {
   $('#modal-prev').click(function() {
     $('.modal-container').remove();
     createModalMockup(users[index-1], users, (index-1));
   });
-
   $('#modal-next').click(function() {
     $('.modal-container').remove();
     createModalMockup(users[index+1], users, (index+1));
   });
+}
 
+
+/*function to check if with the next/prev buttons the user reach one end of the list
+and consequently disable the button */
+
+function checkEndOfList (index) {
+  if (index === 0){
+    $('#modal-prev').disable().blur()
+  }
 }
 
 
@@ -77,23 +88,6 @@ function nextPrevButtons(users, index) {
           if (randomUser.login.username === selectedEmployee) {
             //set the html page format to display the chosen employee
             createModalMockup(randomUser, data.results, index);
-/*
-            $('#modal-prev').click(function() {
-              $('.modal-container').remove();
-              createModalMockup(data.results[index-1]);
-
-            });
-
-            $('#modal-next').click(function() {
-              $('.modal-container').remove();
-              createModalMockup(data.results[index+1]);
-
-            });
-*/
-
-
-
-
           }
         });
       });
