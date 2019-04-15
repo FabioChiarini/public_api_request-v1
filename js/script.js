@@ -3,7 +3,7 @@
  */
 
 
-function createModalMockup (randomUser) {
+function createModalMockup (randomUser, users, index) {
   let modalEmployee = '';
   modalEmployee = '<div class="modal-container"><div class="modal">';
   modalEmployee += '<button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>';
@@ -21,8 +21,27 @@ function createModalMockup (randomUser) {
   modalEmployee += '</div></div>';
   $('.gallery').append(modalEmployee);
 
+  //activate the closing button on the modal element
+  $('#modal-close-btn').click(function() {
+    $('.modal-container').remove();
+  });
+
+  nextPrevButtons(users, index)
+
 }
 
+function nextPrevButtons(users, index) {
+  $('#modal-prev').click(function() {
+    $('.modal-container').remove();
+    createModalMockup(users[index-1], users, (index-1));
+  });
+
+  $('#modal-next').click(function() {
+    $('.modal-container').remove();
+    createModalMockup(users[index+1], users, (index-1));
+  });
+
+}
 
 
 //get 12 results from JSON object from randomuser site and display them on the page
@@ -57,25 +76,24 @@ function createModalMockup (randomUser) {
         data.results.forEach(function(randomUser, index) {
           if (randomUser.login.username === selectedEmployee) {
             //set the html page format to display the chosen employee
-            createModalMockup(randomUser);
-
+            createModalMockup(randomUser, data.results, index);
+/*
             $('#modal-prev').click(function() {
+              $('.modal-container').remove();
               createModalMockup(data.results[index-1]);
 
             });
 
             $('#modal-next').click(function() {
-
-
-            });
-
-
-
-
-            //activate the closing button on the modal element
-            $('#modal-close-btn').click(function() {
               $('.modal-container').remove();
+              createModalMockup(data.results[index+1]);
+
             });
+*/
+
+
+
+
           }
         });
       });
