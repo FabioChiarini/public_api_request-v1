@@ -27,9 +27,8 @@ function createModalMockup (randomUser, users, index) {
   $('#modal-close-btn').click(function() {
     $('.modal-container').remove();
   });
-
+  //attach click event handler to next/prec buttons
   nextPrevButtons(users, index)
-  $('#modal-prev').disable().blur();
 }
 
 //function to add click events to next/prev buttons
@@ -37,20 +36,36 @@ function nextPrevButtons(users, index) {
   $('#modal-prev').click(function() {
     $('.modal-container').remove();
     createModalMockup(users[index-1], users, (index-1));
+    checkEndOfList(index-1);
   });
   $('#modal-next').click(function() {
     $('.modal-container').remove();
     createModalMockup(users[index+1], users, (index+1));
+    checkEndOfList(index+1);
   });
 }
 
 
 /*function to check if with the next/prev buttons the user reach one end of the list
 and consequently disable the button */
-
 function checkEndOfList (index) {
   if (index === 0){
-    $('#modal-prev').disable().blur()
+    $('#modal-next').attr('disabled', false);
+    $('#modal-next').show();
+    $('#modal-prev').attr('disabled', true);
+    $('#modal-prev').hide();
+  }
+  else if (index === 11) {
+    $('#modal-next').attr('disabled', true);
+    $('#modal-next').hide();
+    $('#modal-prev').attr('disabled', false);
+    $('#modal-prev').show();
+  }
+  else {
+    $('#modal-next').attr('disabled', false);
+    $('#modal-next').show();
+    $('#modal-prev').attr('disabled', false);
+    $('#modal-prev').show();
   }
 }
 
@@ -88,6 +103,8 @@ function checkEndOfList (index) {
           if (randomUser.login.username === selectedEmployee) {
             //set the html page format to display the chosen employee
             createModalMockup(randomUser, data.results, index);
+            //check if start or end of list was chose and, if so, display next/prev accordingly
+            checkEndOfList(index);
           }
         });
       });
