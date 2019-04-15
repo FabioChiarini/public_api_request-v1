@@ -46,11 +46,8 @@ function createModalMockup (randomUser) {
     });
 
 
-    //store the list of the username: used to get the next/prev buttons to work
-    let usernameList = [];
     /*add a click event on every div of the page to display the modal of the chosen employee*/
     $('.card').each(function () {
-      usernameList.push(this.id);
       //Event handler for click on employee to display modal
       this.addEventListener('click', function (){
         //store the username of the selected employee to display the modal
@@ -58,13 +55,12 @@ function createModalMockup (randomUser) {
         /*loop trhough each employee and, when the one chosen has been found
         display his modal stats*/
         data.results.forEach(function(randomUser, index) {
-          console.log(index);
           if (randomUser.login.username === selectedEmployee) {
             //set the html page format to display the chosen employee
             createModalMockup(randomUser);
 
             $('#modal-prev').click(function() {
-              createModalMockup(randomUser);
+              createModalMockup(data.results[index-1]);
 
             });
 
