@@ -22,6 +22,7 @@
       employee += '<p class="card-text cap">' + randomUser.location.city + ',' + randomUser.location.state + '</p></div>';
       $('.gallery').append(employee);
       employee = '';
+      console.log(randomUser);
     });
 
 
@@ -45,8 +46,12 @@
             modalEmployee += '<p class="modal-text">' + randomUser.email + '</p>';
             modalEmployee += '<p class="modal-text cap">' + randomUser.location.city + '</p><hr>';
             modalEmployee += '<p class="modal-text">' + randomUser.cell + '</p>';
-            modalEmployee += '<p class="modal-text">' + randomUser.location.street + ', ' + randomUser.location.city + ', ' + randomUser.location.state + ', ' + randomUser.location.postcode + '</p>';
-            modalEmployee += '<p class="modal-text">Birthday: ' + randomUser.dob.date.substring(0,10) + '</p></div></div></div>';
+            modalEmployee += '<p class="modal-text">' + randomUser.location.street + ', ' + randomUser.location.city + ', ' + randomUser.location.postcode + ', ' + randomUser.location.state + '</p>';
+            modalEmployee += '<p class="modal-text">Birthday: ' + randomUser.dob.date.substring(0,10) + '</p></div></div>';
+            modalEmployee += '<div class="modal-btn-container">';
+            modalEmployee += '<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>';
+            modalEmployee += '<button type="button" id="modal-next" class="modal-next btn">Next</button>';
+            modalEmployee += '</div></div>';
             $('.gallery').append(modalEmployee);
             modalEmployee = '';
             //activate the closing button on the modal element
