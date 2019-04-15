@@ -111,9 +111,27 @@ function checkEndOfList (index) {
       });
     });
 
+    //add search bar to the page
     let searchBar = '<form action="#" method="get">';
     searchBar += '<input type="search" id="search-input" class="search-input" placeholder="Search...">';
-    searchBar += '<input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit"></form>';
+    searchBar += '<input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit"></form>';
     $('.search-container').append(searchBar);
+
+    $('#search-submit').click(function (e) {
+      //prevent get request to be re submitted again
+      e.preventDefault();
+      //get user input
+      let userInput = $('#search-input').val();
+
+      $('.card').each(function () {
+        console.log($(this).children().children()[1].text());
+        $(this).hide();
+
+        //card.attr('hidden', true);
+        //students[k].name.toString().toUpperCase().includes(userInput.toString().toUpperCase()
+
+      });
+
+    });
   }
 });
