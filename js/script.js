@@ -2,6 +2,9 @@
  * Project 5 - Public API Request
  */
 
+ //global variable used to store the initial employee list
+ var immutableUsersList;
+
 /* Function to:
 1) Create the mockup for the modal employees
 2) call the function to add click event to next/prev buttons */
@@ -27,84 +30,60 @@ function createModalMockup (randomUser, users, index) {
   $('#modal-close-btn').click(function() {
     $('.modal-container').remove();
   });
+  //getUpdatedIndex(randomUser)
+  nextPrevButtons(users, index);
+}
 
-  /* check if modal is being displayed on search mode or not and set next/prev
-  buttons accordingly*/
-  if($('#search-input').val() === '') {
-    //attach click event handler to next/prec buttons
-    nextPrevButtons(users, index)
-  }
-  else {
-    //nextPrevButtonsWithSearch(users, index);
-    console.log('BBB')
-  }
+/*function that return a subset of the employee list composed only by the
+employee that are visible on the page after a search*/
+function getVisibleEmployees () {
+  let visibles = [];
+  immutableUsersList.forEach(function (employee) {
+    $('.card:visible').each(function (){
+      //check if employee username matches one of the visible usernames
+      if($(this)[0].id === employee.login.username) {
+        visibles.push(employee);
+      }
+    });
+  });
+  return visibles;
 }
 
 
 //function to add click events to next/prev buttons
 function nextPrevButtons(users, index) {
+  console.log(index);
+  //get the numbers of cards the search has returned
   let numberOfEmployees = $('.card:visible').length;
+  employeeUsername =  users[index].login.username;
+  $('.card:visible').each(function (i){
+    if($(this)[0].id === employeeUsername) {
+      index = i;
+    }
+  });
+  console.log('UPDATED: ' + index);
   $('#modal-prev').click(function() {
     $('.modal-container').remove();
     if (index - 1 < 0) {
-      createModalMockup(users[numberOfEmployees-1], users, numberOfEmployees-1);
+      createModalMockup(getVisibleEmployees ()[numberOfEmployees-1], users, numberOfEmployees-1);
     }
     else {
-      createModalMockup(users[index-1], users, (index-1));
+      createModalMockup(getVisibleEmployees ()[index-1], users, (index-1));
     }
   });
   $('#modal-next').click(function() {
     $('.modal-container').remove();
     if (index + 1 > numberOfEmployees-1) {
-      createModalMockup(users[0], users, 0);
+      createModalMockup(getVisibleEmployees ()[0], users, 0);
     }
     else {
-      createModalMockup(users[index+1], users, (index+1));
+      createModalMockup(getVisibleEmployees ()[index+1], users, (index+1));
     }
   });
-}
-
-/*
-function returnNextIndex (index) {
-  let visibleIds = getVisibleId();
-  $('.card').each(function (i) {
-    if(i > index) {
-      if (visibleIds.includes($(this)[0].id)){
-        return i;
-      }
-    }
-    //console.log($(this)[0].id);
-    //console.log($('.card:visible'));
-
-  });
-}
-
-//return an array of all ids that are visible. Need it for next/prev buttons on search results
-function getVisibleId () {
-  let visibleIds = []
-  $('.card:visible').each(function () {
-    visibleIds.push($(this)[0].id);
-
-  });
-  return visibleIds;
-}
+  }
 
 
-//function to add click events to next/prev buttons
-function nextPrevButtonsWithSearch(users, index) {
-  $('#modal-prev').click(function() {
-    $('.modal-container').remove();
-    createModalMockup(users[index-1], users, (index-1));
-    checkEndOfList(index-1);
-  });
-  $('#modal-next').click(function() {
-    $('.modal-container').remove();
-    createModalMockup(users[index+1], users, returnNextIndex(index));
-    checkEndOfList(index+1);
-  });
-}
-*/
-
+//function to display only the employees that match the searched string
 function showSearchedEmployee (userInput) {
   //hide all the cards and show only the ones that match (partial) user input
   $('.card').each(function () {
@@ -117,12 +96,16 @@ function showSearchedEmployee (userInput) {
 }
 
 
-
 //get 12 results from JSON object from randomuser site and display them on the page
  $.ajax({
   url: 'https://randomuser.me/api/?results=12&nat=us',
   dataType: 'json',
   success: function(data) {
+
+    /*store the employee list in a global variable. This is need to get the
+    modal next/prev buttons to work correctly after search*/
+    immutableUsersList = data.results;
+
     /*loop through each random user obtained from the request
     and format the html that will contain the necessary data */
     /*username was added to the element in order to univocally distinguish the employees
@@ -137,7 +120,6 @@ function showSearchedEmployee (userInput) {
       $('.gallery').append(employee);
       employee = '';
     });
-
 
 
     /*add a click event on every div of the page to display the modal of the chosen employee*/
@@ -158,7 +140,6 @@ function showSearchedEmployee (userInput) {
     });
 
 
-
     //add search bar to the page
     let searchBar = '<form action="#" method="get">';
     searchBar += '<input type="search" id="search-input" class="search-input" placeholder="Search...">';
@@ -171,7 +152,7 @@ function showSearchedEmployee (userInput) {
       e.preventDefault();
       //get user input
       let userInput = $('#search-input').val().toLowerCase();
-      showSearchedEmployee(userInput, data.results);
+      showSearchedEmployee(userInput);
     });
 
     //search employees when button is clicked
@@ -180,7 +161,7 @@ function showSearchedEmployee (userInput) {
       e.preventDefault();
       //get user input
       let userInput = $('#search-input').val().toLowerCase();
-      showSearchedEmployee(userInput, data.results);
+      showSearchedEmployee(userInput);
     });
   }
 });
