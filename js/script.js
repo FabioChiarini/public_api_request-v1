@@ -52,9 +52,7 @@ function getVisibleEmployees () {
 
 //function to add click events to next/prev buttons
 function nextPrevButtons(users, index) {
-  console.log(index);
   let visibles = getVisibleEmployees();
-  console.log(visibles);
   //get the numbers of cards the search has returned
   let numberOfEmployees = $('.card:visible').length;
   employeeUsername =  users[index].login.username;
@@ -63,7 +61,6 @@ function nextPrevButtons(users, index) {
       index = i;
     }
   });
-  console.log('UPDATED: ' + index);
   $('#modal-prev').click(function() {
     $('.modal-container').remove();
     if (index - 1 < 0) {
