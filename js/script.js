@@ -53,6 +53,8 @@ function getVisibleEmployees () {
 //function to add click events to next/prev buttons
 function nextPrevButtons(users, index) {
   console.log(index);
+  let visibles = getVisibleEmployees();
+  console.log(visibles);
   //get the numbers of cards the search has returned
   let numberOfEmployees = $('.card:visible').length;
   employeeUsername =  users[index].login.username;
@@ -65,19 +67,19 @@ function nextPrevButtons(users, index) {
   $('#modal-prev').click(function() {
     $('.modal-container').remove();
     if (index - 1 < 0) {
-      createModalMockup(getVisibleEmployees ()[numberOfEmployees-1], users, numberOfEmployees-1);
+      createModalMockup(visibles[numberOfEmployees-1], visibles, numberOfEmployees-1);
     }
     else {
-      createModalMockup(getVisibleEmployees ()[index-1], users, (index-1));
+      createModalMockup(visibles[index-1], visibles, (index-1));
     }
   });
   $('#modal-next').click(function() {
     $('.modal-container').remove();
     if (index + 1 > numberOfEmployees-1) {
-      createModalMockup(getVisibleEmployees ()[0], users, 0);
+      createModalMockup(visibles[0], visibles, 0);
     }
     else {
-      createModalMockup(getVisibleEmployees ()[index+1], users, (index+1));
+      createModalMockup(visibles[index+1], visibles, (index+1));
     }
   });
   }
